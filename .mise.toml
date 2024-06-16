@@ -1,0 +1,71 @@
+[tools]
+"go:github.com/coreos/butane/internal" = "v0.20.0"
+kustomize = "5.4.1"
+k0sctl = "0.17.7"
+"cargo:coreos-installer" = "latest"
+pre-commit = "latest"
+kubectl = "latest"
+"pipx:pykickstart" = "latest"
+"npm:mustache" = "latest"
+
+[env]
+# Tools
+CONTAINER_ENGINE="docker"
+DOWNLOAD_FROM_URL="{{ [config_root, 'hack', 'download_from_url.sh'] | join_path }}"
+
+# Directories
+CACHE_DIR="{{ [config_root, '.cache'] | join_path }}"
+DATA_DIR="{{ [env.CACHE_DIR, 'data'] | join_path }}"
+TMP_DIR="{{ [env.CACHE_DIR, 'tmp'] | join_path }}"
+
+# K0SCTL
+K0SCTL_USERNAME="admin"
+K0SCTL_IDENTITY_PATH="{{ [config_root, '.ssh', 'id_rsa'] | join_path }}"
+K0SCTL_BASE_CONFIG_PATH="{{ [config_root, 'k0s', 'k0s.Cluster.yaml'] | join_path }}"
+K0SCTL_CONFIG_OUTPUT="{{ [env.CACHE_DIR, 'k0sctl', 'config.yaml'] | join_path }}"
+K0SCTL_KUBECONFIG="{{ [env.CACHE_DIR, '.kube', 'config'] | join_path }}"
+KUBECONFIG="{{ env.K0SCTL_KUBECONFIG }}"
+K0SCTL_HOSTS=""
+K0SCTL_CLUSTER_NAME="infra"
+K0S_BM_BUTANE_PATH="{{ [config_root, 'ignition', 'k0s-bm.bu'] | join_path }}"
+K0S_VM_BUTANE_PATH="{{ [config_root, 'ignition', 'k0s-vm.bu'] | join_path }}"
+
+# User Data
+LABADM_PASSWD=""
+LABADM_PUBLIC_KEY=""
+
+[tasks."k0s:apply"]
+run = "k0sctl apply -c ${K0SCTL_CONFIG_OUTPUT}"
+depends = ["generate:config"]
+
+[tasks."k0s:reset"]
+run = "k0sctl reset --force -c ${K0SCTL_CONFIG_OUTPUT}"
+depends = ["generate:config"]
+
+[tasks."k0s:config"]
+run = """
+    #! /usr/bin/env bash
+    mkdir -p $(dirname ${K0SCTL_KUBECONFIG})
+    install -m 0600 <(k0sctl kubeconfig -c ${K0SCTL_CONFIG_OUTPUT}) ${K0SCTL_KUBECONFIG}
+    """
+depends = ["generate:config"]
+
+[tasks."flux:apply"]
+run = "kubectl apply -k flux"
+
+[tasks."generate:config"]
+run = """
+    #! /usr/bin/env bash
+    mkdir -p $(dirname ${K0SCTL_CONFIG_OUTPUT})
+    kustomize build k0s > ${K0SCTL_CONFIG_OUTPUT}
+    """
+depends = ["generate:k0s"]
+
+[tasks."generate:k0s"]
+run = """
+    k0sctl init --k0s \
+        --user ${K0SCTL_USERNAME} \
+        -i ${K0SCTL_IDENTITY_PATH} \
+        --cluster-name "${K0SCTL_CLUSTER_NAME}" \
+        ${K0SCTL_HOSTS} > ${K0SCTL_BASE_CONFIG_PATH}
+    """

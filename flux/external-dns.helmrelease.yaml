@@ -1,0 +1,62 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: external-dns
+spec:
+  targetNamespace: external-dns
+  install:
+    createNamespace: true
+  interval: 10m
+  chart:
+    spec:
+      chart: external-dns
+      version: "1.14.*"
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+  values:
+    registry: noop
+    sources:
+    - service
+    - ingress
+    extraArgs:
+    - --managed-record-types=A
+    - --managed-record-types=AAAA
+    image:
+      pullPolicy: Always
+    provider:
+      name: webhook
+      webhook:
+        image:
+          repository: quay.io/ajpantuso/opnsense_unbound_external-dns_webhook
+          tag: latest
+        securityContext:
+          runAsNonRoot: false
+        env:
+        - name: OPNSENSE_BIND
+          value: "0.0.0.0:8888"
+        - name: OPNSENSE_BASE
+          valueFrom:
+            configMapKeyRef:
+              name: opnsense
+              key: base
+        - name: OPNSENSE_ALLOW_INVALID_CERTS
+          valueFrom:
+            configMapKeyRef:
+              name: opnsense
+              key: allowInvalidCerts
+        - name: OPNSENSE_DOMAIN_FILTERS
+          valueFrom:
+            configMapKeyRef:
+              name: opnsense
+              key: domainFilters
+        - name: OPNSENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: opnsense
+              key: key
+        - name: OPNSENSE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: opnsense
+              key: secret
