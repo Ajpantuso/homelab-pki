@@ -27,12 +27,14 @@ K0SCTL_KUBECONFIG="{{ [env.CACHE_DIR, '.kube', 'config'] | join_path }}"
 KUBECONFIG="{{ env.K0SCTL_KUBECONFIG }}"
 K0SCTL_HOSTS=""
 K0SCTL_CLUSTER_NAME="infra"
-K0S_BM_BUTANE_PATH="{{ [config_root, 'ignition', 'k0s-bm.bu'] | join_path }}"
-K0S_VM_BUTANE_PATH="{{ [config_root, 'ignition', 'k0s-vm.bu'] | join_path }}"
 
 # User Data
 LABADM_PASSWD=""
 LABADM_PUBLIC_KEY=""
+
+ROOT_CA_DIR=""
+SIGNING_CA_DIR=""
+CERT_OUTPUT_DIR=""
 
 [tasks."k0s:apply"]
 run = "k0sctl apply -c ${K0SCTL_CONFIG_OUTPUT}"
@@ -69,3 +71,58 @@ run = """
         --cluster-name "${K0SCTL_CLUSTER_NAME}" \
         ${K0SCTL_HOSTS} > ${K0SCTL_BASE_CONFIG_PATH}
     """
+
+[tasks."generate:issue-server-cert"]
+run = """
+    #!/usr/bin/env bash
+
+    name="$1"
+
+    podman run \
+        --rm -it \
+        --read-only \
+        -v "${SIGNING_CA_DIR}:/signing-ca:Z" \
+        -v "${CERT_OUTPUT_DIR}:/output:Z" \
+        "$(podman build -q gen-ca)" \
+        issue-server-cert "${name}"
+"""
+
+[tasks."generate:issue-client-cert"]
+run = """
+    #!/usr/bin/env bash
+
+    name="$1"
+
+    podman run \
+        --rm -it \
+        --read-only \
+        -v "${SIGNING_CA_DIR}:/signing-ca:Z" \
+        -v "${CERT_OUTPUT_DIR}:/output:Z" \
+        "$(podman build -q gen-ca)" \
+        issue-client-cert "${name}"
+"""
+
+[tasks."generate:signing-ca"]
+run = """
+    #!/usr/bin/env bash
+
+    podman run \
+        --rm -it \
+        --read-only \
+        -v "${ROOT_CA_DIR}:/root-ca:Z" \
+        -v "${SIGNING_CA_DIR}:/signing-ca:Z" \
+        "$(podman build -q gen-ca)" \
+        generate-signing-ca
+"""
+
+[tasks."generate:root-ca"]
+run = """
+    #!/usr/bin/env bash
+
+    podman run \
+        --rm -it \
+        --read-only \
+        -v "${ROOT_CA_DIR}:/root-ca:Z" \
+        "$(podman build -q gen-ca)" \
+        generate-root-ca
+"""
