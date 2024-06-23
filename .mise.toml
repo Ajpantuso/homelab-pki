@@ -100,6 +100,19 @@ run = """
         issue-client-cert "$@"
 """
 
+[tasks."ca:sign-intermediate"]
+run = """
+    #!/usr/bin/env bash
+
+    podman run \
+        --rm -it \
+        --read-only \
+        -v "${ROOT_CA_DIR}:/root-ca:Z" \
+        -v "${CERT_OUTPUT_DIR}:/output:Z" \
+        "$(podman build -q gen-ca)" \
+        sign-intermediate-ca "$@"
+"""
+
 [tasks."ca:generate-signing"]
 run = """
     #!/usr/bin/env bash

@@ -10,6 +10,9 @@ function main() {
     shift 4
     req_flags=("$@")
 
+    # TODO: setup signing ca if not done
+    install /app/signing-ca.conf "${signing_ca_dir}"
+
     if [ ! -f "${out_dir}/${name}.csr" ]; then
         generate_csr "${out_dir}" "${name}" "${req_flags[@]}"
     fi

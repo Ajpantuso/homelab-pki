@@ -30,6 +30,16 @@ function main() {
             shift 2
             ./issue_certificate.sh "server" "${SIGNING_CA_DIR}" "${OUTPUT_DIR}" "${name}" "$@"
             ;;
+        "sign-intermediate-ca")
+            if [ $# -lt 2 ]; then
+                usage
+                exit 1
+            fi
+
+            name="$2"
+            shift 2
+            ./sign_intermediate_ca.sh "${ROOT_CA_DIR}" "${OUTPUT_DIR}" "${name}"
+            ;;
         *)
             usage
             exit 1
