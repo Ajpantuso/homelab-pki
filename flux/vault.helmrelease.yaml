@@ -20,3 +20,7 @@ spec:
         enabled: true
         hosts:
         - host: vault.ajphome.com
+        tls:
+        - secretName: vault-tls
+          hosts:
+          - vault.ajphome.com

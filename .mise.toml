@@ -7,6 +7,8 @@ pre-commit = "latest"
 kubectl = "latest"
 "pipx:pykickstart" = "latest"
 "npm:mustache" = "latest"
+terraform = "latest"
+vault = "latest"
 
 [env]
 # Tools
@@ -72,11 +74,9 @@ run = """
         ${K0SCTL_HOSTS} > ${K0SCTL_BASE_CONFIG_PATH}
     """
 
-[tasks."generate:issue-server-cert"]
+[tasks."ca:issue-server-cert"]
 run = """
     #!/usr/bin/env bash
-
-    name="$1"
 
     podman run \
         --rm -it \
@@ -84,14 +84,12 @@ run = """
         -v "${SIGNING_CA_DIR}:/signing-ca:Z" \
         -v "${CERT_OUTPUT_DIR}:/output:Z" \
         "$(podman build -q gen-ca)" \
-        issue-server-cert "${name}"
+        issue-server-cert "$@"
 """
 
-[tasks."generate:issue-client-cert"]
+[tasks."ca:issue-client-cert"]
 run = """
     #!/usr/bin/env bash
-
-    name="$1"
 
     podman run \
         --rm -it \
@@ -99,10 +97,10 @@ run = """
         -v "${SIGNING_CA_DIR}:/signing-ca:Z" \
         -v "${CERT_OUTPUT_DIR}:/output:Z" \
         "$(podman build -q gen-ca)" \
-        issue-client-cert "${name}"
+        issue-client-cert "$@"
 """
 
-[tasks."generate:signing-ca"]
+[tasks."ca:generate-signing"]
 run = """
     #!/usr/bin/env bash
 
@@ -115,7 +113,15 @@ run = """
         generate-signing-ca
 """
 
-[tasks."generate:root-ca"]
+[tasks."ca:install-certs"]
+run = """
+    #!/usr/bin/env bash
+
+    sudo cp "${ROOT_CA_DIR}/root-ca.crt" /etc/pki/ca-trust/source/anchors/root-ca.crt
+    sudo update-ca-trust
+"""
+
+[tasks."ca:generate-root"]
 run = """
     #!/usr/bin/env bash
 

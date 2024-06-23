@@ -16,7 +16,9 @@ function main() {
                 exit 1
             fi
 
-            ./issue_certificate.sh "client" "${SIGNING_CA_DIR}" "${OUTPUT_DIR}" "$2"
+            name="$2"
+            shift 2
+            ./issue_certificate.sh "client" "${SIGNING_CA_DIR}" "${OUTPUT_DIR}" "${name}" "$@"
             ;;
         "issue-server-cert")
             if [ $# -lt 2 ]; then
@@ -24,7 +26,9 @@ function main() {
                 exit 1
             fi
 
-            ./issue_certificate.sh "server" "${SIGNING_CA_DIR}" "${OUTPUT_DIR}" "$2"
+            name="$2"
+            shift 2
+            ./issue_certificate.sh "server" "${SIGNING_CA_DIR}" "${OUTPUT_DIR}" "${name}" "$@"
             ;;
         *)
             usage
