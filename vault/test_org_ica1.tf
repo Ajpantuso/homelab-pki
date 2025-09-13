@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 resource "vault_mount" "home_v1_ica1_v1" {
   path                      = "home/v1/ica1/v1"
   type                      = "pki"

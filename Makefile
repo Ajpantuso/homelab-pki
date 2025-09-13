@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 # Homelab PKI Makefile
 # Migrated from mise.toml
 
@@ -118,3 +122,7 @@ ca-generate-root:
 		"$$($(CONTAINER_ENGINE) build -q gen-ca)" \
 		generate-root-ca
 .PHONY: ca-generate-root
+
+reuse-apply:
+	reuse annotate --copyright NONE --license Unlicense -r "$(PROJECT_ROOT)" --fallback-dot-license
+.PHONY: reuse-apply

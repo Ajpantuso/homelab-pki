@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 FROM registry.access.redhat.com/ubi9/ubi
 
 WORKDIR /app

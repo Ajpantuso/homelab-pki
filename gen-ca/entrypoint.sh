@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 set -eo pipefail
 
 function main() {

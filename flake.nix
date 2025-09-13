@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 {
   description = "Homelab PKI development environment";
 
@@ -19,19 +23,20 @@
       {
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            butane
-            kustomize
-            pre-commit
-            k0sctl
-            kubectl
-            git
-            podman
             bash
+            butane
             coreutils
             findutils
+            git
+            gnumake
+            k0sctl
+            kubectl
+            kustomize
+            podman
+            pre-commit
+            reuse
             tenv
             vault-bin
-            gnumake
           ];
 
           shellHook = ''

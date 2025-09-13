@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 resource "vault_mount" "ssh_ca" {
   path                      = "ssh-ca"
   type                      = "ssh"

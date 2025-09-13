@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 # This file is maintained automatically by "terraform init".
 # Manual edits may be lost in future updates.
 

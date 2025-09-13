@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 apiVersion: k0sctl.k0sproject.io/v1beta1
 kind: Cluster
 metadata:
