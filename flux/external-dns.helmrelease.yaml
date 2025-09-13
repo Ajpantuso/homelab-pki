@@ -14,7 +14,7 @@ spec:
   chart:
     spec:
       chart: external-dns
-      version: "1.14.*"
+      version: "1.19.*"
       sourceRef:
         kind: HelmRepository
         name: external-dns
@@ -36,6 +36,18 @@ spec:
           tag: v0.4.0
         securityContext:
           runAsNonRoot: false
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8888
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8888
+          initialDelaySeconds: 10
+          timeoutSeconds:
         env:
         - name: OPNSENSE_BIND
           value: "0.0.0.0:8888"
