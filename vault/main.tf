@@ -2,7 +2,9 @@
 #
 # SPDX-License-Identifier: Unlicense
 
-provider "vault" {}
+provider "vault" {
+  address = "https://vault.ajphome.com"
+}
 
 locals {
   default_3y_in_sec  = 94608000

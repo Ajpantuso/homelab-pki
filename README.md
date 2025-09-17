@@ -6,8 +6,7 @@ SPDX-License-Identifier: Unlicense
 
 # TODO
 
-- Add Certificate for `vault`
-  - May require some self-bootstrapping + cert-manager
+- Issue new cert for gtw-001
 - Add Admin Group
 - Add User with Admin access
 
