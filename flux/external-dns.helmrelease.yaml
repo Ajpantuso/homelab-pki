@@ -19,60 +19,43 @@ spec:
         kind: HelmRepository
         name: external-dns
   values:
-    registry: noop
-    sources:
-    - service
-    - ingress
-    extraArgs:
-    - --managed-record-types=A
-    - --managed-record-types=AAAA
-    image:
-      pullPolicy: Always
+    fullnameOverride: external-dns-opnsense
     provider:
       name: webhook
       webhook:
         image:
-          repository: ghcr.io/jobs62/opnsense_unbound_external-dns_webhook
-          tag: v0.4.0
+          repository: ghcr.io/crutonjohn/external-dns-opnsense-webhook
+          tag: v0.1.0
+        env:
+          - name: OPNSENSE_API_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: opnsense
+                key: secret
+          - name: OPNSENSE_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: opnsense
+                key: key
+          - name: OPNSENSE_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: opnsense
+                key: base
+          - name: DOMAIN_FILTER
+            valueFrom:
+              configMapKeyRef:
+                name: opnsense
+                key: domainFilters
+          - name: OPNSENSE_SKIP_TLS_VERIFY
+            value: "true" # optional depending on your environment
+          - name: LOG_LEVEL
+            value: debug
         securityContext:
           runAsNonRoot: false
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 8888
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: 8888
-          initialDelaySeconds: 10
-          timeoutSeconds:
-        env:
-        - name: OPNSENSE_BIND
-          value: "0.0.0.0:8888"
-        - name: OPNSENSE_BASE
-          valueFrom:
-            configMapKeyRef:
-              name: opnsense
-              key: base
-        - name: OPNSENSE_ALLOW_INVALID_CERTS
-          valueFrom:
-            configMapKeyRef:
-              name: opnsense
-              key: allowInvalidCerts
-        - name: OPNSENSE_DOMAIN_FILTERS
-          valueFrom:
-            configMapKeyRef:
-              name: opnsense
-              key: domainFilters
-        - name: OPNSENSE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: opnsense
-              key: key
-        - name: OPNSENSE_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: opnsense
-              key: secret
+    extraArgs:
+    - --managed-record-types=A
+    - --managed-record-types=AAAA
+    policy: sync
+    sources: ["ingress", "service", "crd"]
+    registry: noop

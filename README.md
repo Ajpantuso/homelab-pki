@@ -6,7 +6,6 @@ SPDX-License-Identifier: Unlicense
 
 # TODO
 
-- Issue new cert for gtw-001
 - Add Admin Group
 - Add User with Admin access
 
