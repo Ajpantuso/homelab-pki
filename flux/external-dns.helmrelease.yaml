@@ -56,6 +56,6 @@ spec:
     extraArgs:
     - --managed-record-types=A
     - --managed-record-types=AAAA
-    policy: sync
+    policy: upsert-only
     sources: ["ingress", "service", "crd"]
     registry: noop

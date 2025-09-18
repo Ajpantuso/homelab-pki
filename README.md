@@ -8,6 +8,7 @@ SPDX-License-Identifier: Unlicense
 
 - Add Admin Group
 - Add User with Admin access
+- Inject root CA crt for workloads
 
 ## References
 
