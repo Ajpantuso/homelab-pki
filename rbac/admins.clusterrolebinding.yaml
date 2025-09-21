@@ -11,5 +11,5 @@ subjects:
     name: ajpantuso@gmail.com
 roleRef:
   kind: ClusterRole
-  name: admins
+  name: cluster-admin
   apiGroup: rbac.authorization.k8s.io

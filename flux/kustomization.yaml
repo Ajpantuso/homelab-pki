@@ -14,6 +14,7 @@ resources:
 - metallb.helmrelease.yaml
 - metallb.helmrepository.yaml
 - metallb.kustomization.yaml
+- rbac.kustomization.yaml
 - traefik.helmrepository.yaml
 - traefik.helmrelease.yaml
 - external-dns.helmrepository.yaml
