@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: rbac
+spec:
+  interval: 5m0s
+  path: ./rbac
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-pki

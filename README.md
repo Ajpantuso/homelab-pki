@@ -9,6 +9,7 @@ SPDX-License-Identifier: Unlicense
 - Add Admin Group
 - Add User with Admin access
 - Inject root CA crt for workloads
+- Review error logs in k0scontroller startup about updateconfig
 
 ## References
 

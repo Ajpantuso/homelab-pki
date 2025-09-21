@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: admins
+subjects:
+  - kind: User
+    name: ajpantuso@gmail.com
+roleRef:
+  kind: ClusterRole
+  name: admins
+  apiGroup: rbac.authorization.k8s.io

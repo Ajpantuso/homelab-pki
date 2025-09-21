@@ -42,7 +42,6 @@
           shellHook = ''
             export PROJECT_ROOT="$(git rev-parse --show-toplevel)";
             export CACHE_DIR="$PROJECT_ROOT/.cache";
-            export KUBECONFIG="$CACHE_DIR/.kube/config";
           '';
         };
       });
