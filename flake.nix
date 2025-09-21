@@ -24,12 +24,10 @@
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             bash
-            butane
             coreutils
             findutils
             git
             gnumake
-            k0sctl
             kubectl
             kustomize
             podman
@@ -41,9 +39,8 @@
 
           shellHook = ''
             export PROJECT_ROOT="$(git rev-parse --show-toplevel)";
-            export CACHE_DIR="$PROJECT_ROOT/.cache";
 
-            kubectl config use-context pki
+            kubectl config us-context pki
           '';
         };
       });

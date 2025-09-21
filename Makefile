@@ -8,24 +8,12 @@
 # Default values - override these with environment variables or in a .env file
 CONTAINER_ENGINE ?= docker
 
-# K0SCTL Configuration
-K0SCTL_USERNAME ?= admin
-K0SCTL_IDENTITY_PATH ?= $(HOME)/.ssh/id_rsa
-K0SCTL_BASE_CONFIG_PATH ?= $(PROJECT_ROOT)/k0s/k0s.Cluster.yaml
-K0SCTL_CONFIG_OUTPUT ?= $(CACHE_DIR)/k0sctl/config.yaml
-K0SCTL_CLUSTER_NAME ?= infra
-
 # Include local overrides if they exist
 -include .env
 
 help:
 	@echo "Available targets:"
-	@echo "  k0s-apply              - Apply k0s configuration"
-	@echo "  k0s-reset              - Reset k0s cluster"
-	@echo "  k0s-config             - Generate kubeconfig"
 	@echo "  flux-apply             - Apply Flux configuration"
-	@echo "  generate-config        - Generate k0sctl config"
-	@echo "  generate-k0s           - Generate base k0s config"
 	@echo "  ca-issue-server-cert   - Issue server certificate"
 	@echo "  ca-issue-client-cert   - Issue client certificate"
 	@echo "  ca-sign-intermediate   - Sign intermediate CA"
