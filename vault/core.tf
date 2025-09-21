@@ -124,7 +124,8 @@ EOT
 
 # Create a token for cert-manager with the cert-manager policy
 resource "vault_token" "cert_manager" {
-  policies = [vault_policy.cert_manager.name]
-  ttl      = "8760h"
+  policies  = [vault_policy.cert_manager.name]
+  ttl       = "8760h"
   renewable = false
+  no_parent = true
 }
