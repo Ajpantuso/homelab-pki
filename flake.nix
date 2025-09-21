@@ -40,7 +40,7 @@
           shellHook = ''
             export PROJECT_ROOT="$(git rev-parse --show-toplevel)";
 
-            kubectl config us-context pki
+            kubectl config use-context pki
           '';
         };
       });
