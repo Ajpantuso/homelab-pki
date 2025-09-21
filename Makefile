@@ -34,39 +34,10 @@ help:
 	@echo "  ca-generate-root       - Generate root CA"
 .PHONY: help
 
-# K0s targets
-k0s-apply: generate-config
-	k0sctl apply -c $(K0SCTL_CONFIG_OUTPUT)
-.PHONY: k0s-apply
-
-k0s-reset: generate-config
-	k0sctl reset --force -c $(K0SCTL_CONFIG_OUTPUT)
-.PHONY: k0s-reset
-
-k0s-config: generate-config
-	@mkdir -p $(dir $(KUBECONFIG))
-	@install -m 0600 <(k0sctl kubeconfig -c $(K0SCTL_CONFIG_OUTPUT)) $(KUBECONFIG)
-	export KUBECONFIG=$(KUBECONFIG)
-.PHONY: k0s-config
-
 # Flux targets
 flux-apply:
 	kubectl apply -k flux
 .PHONY: flux-apply
-
-# Generate targets
-generate-config: generate-k0s
-	@mkdir -p $(dir $(K0SCTL_CONFIG_OUTPUT))
-	kustomize build k0s > $(K0SCTL_CONFIG_OUTPUT)
-.PHONY: generate-config
-
-generate-k0s:
-	k0sctl init --k0s \
-		--user $(K0SCTL_USERNAME) \
-		-i $(K0SCTL_IDENTITY_PATH) \
-		--cluster-name "$(K0SCTL_CLUSTER_NAME)" \
-		$(K0SCTL_HOSTS) > $(K0SCTL_BASE_CONFIG_PATH)
-.PHONY: generate-k0s
 
 # Certificate Authority targets
 ca-issue-server-cert:
