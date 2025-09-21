@@ -15,6 +15,10 @@ spec:
     - "{{ address }}"
     - pki
     - 127.0.0.1
+    extraArgs:
+      oidc-issuer-url: "{{ oidc_issuer_url }}"
+      oidc-client-id: "{{ oidc_client_id }}"
+      oidc-username-claim: email
   extensions:
     helm:
       charts:
