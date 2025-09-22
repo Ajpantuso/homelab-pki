@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+---
+repo: Ajpantuso/homelab-pki
+k0s:
+  version: v1.33.4+k0s.0
+  config_path: "/k0s/pki.clusterconfig.yaml.j2"
+oidc:
+  config_url: "http://srv-001.ajphome.com/pki/k0s-pki-oidc.yaml"
+flux:
+  kustomize_dir: "/flux"
