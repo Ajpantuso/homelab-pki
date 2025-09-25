@@ -82,6 +82,11 @@ ca-generate-root:
 		generate-root-ca
 .PHONY: ca-generate-root
 
+update-k0s-version:
+	@VERSION=$$(curl -sSL https://api.github.com/repos/k0sproject/k0s/releases/latest | jq -r .name) && \
+	yq -r ".k0s.version = \"$$VERSION\"" --indentless -iy config.yaml
+.PHONY: update-k0s-version
+
 reuse-apply:
 	reuse annotate --copyright NONE --license Unlicense -r "$(PROJECT_ROOT)" --fallback-dot-license
 .PHONY: reuse-apply
