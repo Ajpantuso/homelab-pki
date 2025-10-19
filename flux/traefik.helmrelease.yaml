@@ -19,6 +19,9 @@ spec:
         name: traefik
   interval: 10m0s
   values:
+    ingressClass:
+      enabled: true
+      isDefaultClass: true
     providers:
       kubernetesIngress:
         publishedService:
