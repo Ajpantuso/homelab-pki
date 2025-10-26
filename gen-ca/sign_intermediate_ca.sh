@@ -29,6 +29,7 @@ function sign_intermediate_ca() {
         -in "${intermediate_dir}/${name}.csr" \
         -out "${intermediate_dir}/${name}.crt" \
         -extensions signing_ca_ext
+        # -subj "/C=US/O=AJP/CN=<CA NAME>"
 }
 
 main "$@"
