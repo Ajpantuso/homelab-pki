@@ -21,13 +21,13 @@ spec:
   values:
     configuration:
       backupStorageLocation:
-        bucket: velero-backups
-        name: default
-        provider: aws
-        config:
-          s3Url: https://api.minio.ajphome.com
-          insecureSkipTLSVerify: false
-          region: minio
+        - bucket: velero-backups
+          name: default
+          provider: aws
+          config:
+            s3Url: https://api.minio.ajphome.com
+            insecureSkipTLSVerify: false
+            region: minio
       schedules:
         # Schedules are defined in the velero/ kustomization directory
       # Kopia uploader backend for file-level volume snapshots
