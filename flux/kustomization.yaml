@@ -6,16 +6,19 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: flux-system
 resources:
+- external-dns.helmrelease.yaml
+- external-dns.helmrepository.yaml
 - hashicorp.helmrepository.yaml
-- vault.helmrelease.yaml
 - homelab-pki.gitrepository.yaml
-- openebs.helmrepository.yaml
-- openebs.helmrelease.yaml
 - metallb.helmrelease.yaml
 - metallb.helmrepository.yaml
 - metallb.kustomization.yaml
+- openebs.helmrelease.yaml
+- openebs.helmrepository.yaml
 - rbac.kustomization.yaml
-- traefik.helmrepository.yaml
 - traefik.helmrelease.yaml
-- external-dns.helmrepository.yaml
-- external-dns.helmrelease.yaml
+- traefik.helmrepository.yaml
+- vault.helmrelease.yaml
+- velero.helmrelease.yaml
+- velero.helmrepository.yaml
+- velero.kustomization.yaml

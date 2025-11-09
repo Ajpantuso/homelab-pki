@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: daily-backup
+  namespace: velero
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM UTC
+  template:
+    includedNamespaces:
+    - '*'
+    excludedNamespaces:
+    - kube-node-lease
+    - kube-public
+    storageLocation: default
+    ttl: 168h  # 7 days retention
+    defaultVolumesToFsBackup: true
+    defaultVolumesToRestic: false
+    # Use Kopia uploader for file-level snapshots

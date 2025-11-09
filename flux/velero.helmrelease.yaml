@@ -1,0 +1,60 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: velero
+spec:
+  targetNamespace: velero
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: velero
+      version: "8.1.*"
+      sourceRef:
+        kind: HelmRepository
+        name: velero
+  interval: 10m
+  values:
+    configuration:
+      backupStorageLocation:
+        bucket: velero-backups
+        name: default
+        provider: aws
+        config:
+          s3Url: https://api.minio.ajphome.com
+          insecureSkipTLSVerify: false
+          region: minio
+      schedules:
+        # Schedules are defined in the velero/ kustomization directory
+      # Kopia uploader backend for file-level volume snapshots
+      uploaderType: kopia
+      uploader:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+    credentials:
+      useSecret: true
+      name: velero-credentials
+      key: cloud
+    initContainers:
+      - name: velero-plugin-for-aws
+        image: velero/velero-plugin-for-aws:v1.11.*
+    schedules: {}
+    serviceAccount:
+      create: true
+    rbac:
+      create: true
+    # Node agent for Kopia
+    nodeAgent:
+      enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+    # Priority for cluster backups
+    priorityClassName: system-cluster-critical

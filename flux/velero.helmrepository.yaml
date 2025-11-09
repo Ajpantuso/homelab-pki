@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: velero
+spec:
+  interval: 24h0m0s
+  url: https://vmware-tanzu.github.io/helm-charts
