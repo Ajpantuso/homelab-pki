@@ -26,6 +26,7 @@
             bash
             coreutils
             findutils
+            fluxcd
             git
             gnumake
             kubectl
