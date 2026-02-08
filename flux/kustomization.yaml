@@ -19,6 +19,3 @@ resources:
 - traefik.helmrelease.yaml
 - traefik.helmrepository.yaml
 - vault.helmrelease.yaml
-- velero.helmrelease.yaml
-- velero.helmrepository.yaml
-- velero.kustomization.yaml
